@@ -16,3 +16,37 @@ for (let i = 1; i < 8; i++) {
         };
     })(i))
 }
+
+$(function () {
+    var model = {
+        init: function () {
+            localStorage.cats = [];
+            for (let i = 1; i < 8; i++) {
+                var cat = {
+                    name: `cat${i}`,
+                    counter: 0
+                }
+                localStorage.cats.push(cat);
+            }
+        },
+        getCat: function (num) {
+            return localStorage.cats[num];
+        }
+    };
+
+    var octopus = {
+        getCats = function (num) {
+            return model.getCat(num);
+        },
+        init: function () {
+            model.init();
+            view.init();
+        }
+    };
+
+    var view = {
+        init: function () {
+
+        }
+    };
+})
