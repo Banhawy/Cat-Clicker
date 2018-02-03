@@ -33,6 +33,11 @@ $(function() {
         increment: function(num) {
             let cat = this.getCat(num);
             cat.counter++;
+        },
+        setCatAttr: function(cat, attrObj) {
+            cat.name = attrObj.get('name');
+            cat.image = attrObj.get('imageUrl');
+            cat.counter = attrObj.get('clicks');
         }
     };
 
@@ -59,6 +64,14 @@ $(function() {
         },
         updateCounterView: function() {
             catView.render();
+        },
+        setCatAttr: function(attrObj) {
+            let currentCat = model.getCurrentCat();
+            model.setCatAttr(currentCat, attrObj);
+            catView.render();
+        },
+        setAdminView: function() {
+            admin.render();
         },
         init: function() {
             model.init();
@@ -114,12 +127,28 @@ $(function() {
     var admin = {
         init: function() {
             this.adminButton = $('#admin');
+            this.adminDiv = $('.admin');
             this.adminButton.on('click', function() {
-                this.adminDiv = $('.admin');
-                this.adminDiv.toggle();
+                octopus.setAdminView();
             });
+            this.save = $('#save');
+            this.cancel = $('#cancel');
+            this.form = document.querySelector("form");
+            this.form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                var formData = new FormData(this);
+                octopus.setCatAttr(formData);
+                e.preventDefault();
+            });
+            this.form.addEventListener('reset', function() {
+                admin.hide();
+            })
+        },
+        hide: function() {
+            this.adminDiv.hide();
         },
         render: function() {
+            this.adminDiv.show();
 
         }
     }
