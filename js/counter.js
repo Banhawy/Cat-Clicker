@@ -89,16 +89,6 @@ $(function() {
             this.cats = octopus.getAllCats();
             listView.render();
         },
-        addClickEvents: function() {
-            this.cats.forEach(function(cat) {
-                $(`#${cat.catNumber}`).on('click', (function(num) {
-                    return function() {
-                        octopus.setCurrentCat(num);
-                        octopus.setCatView();
-                    }
-                })(cat.catNumber));
-            })
-        },
         render: function() {
             var htmlStr = '';
             this.cats.forEach(function(cat) {
