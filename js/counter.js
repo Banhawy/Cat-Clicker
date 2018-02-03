@@ -21,22 +21,18 @@ $(function () {
         getCurrentCat: function () {
             for (var i = 0; i < this.cats.length; i++) {
                 let cat = this.cats[i];
-                console.log(cat);
                 if (cat.currentCat) return cat;
 
-            }
-            for (cat in this.cats) {
             }
         },
         setCurrenCat: function (num) {
             let current = this.getCurrentCat(num - 1);
             if (current) current.currentCat = false;
-            console.log(this.cats[num - 1]['currentCat']);
             this.cats[num - 1]['currentCat'] = true;
-            console.log(this.cats[num - 1]['currentCat']);
         },
         increment: function (num) {
-            this.getCat(num).counter++;
+            let cat = this.getCat(num);
+            cat.counter++;
         }
     };
 
@@ -60,6 +56,9 @@ $(function () {
         },
         setCurrentCat: function (num) {
             return model.setCurrenCat(num);
+        },
+        updateCounterView: function () {
+            catView.render();
         },
         init: function () {
             model.init();
@@ -94,7 +93,6 @@ $(function () {
         init: function () {
             this.catShow = $('.cat-show');
             this.currentCat = octopus.getCurrentCat();
-            console.log(this.currentCat);
             catView.render();
         },
         hide: function () {
@@ -105,7 +103,10 @@ $(function () {
             <img id="cat-counter-${this.currentCat.catNumber}" src="img/cat${this.currentCat.catNumber}.jpg" alt="cute cat pic">`;
             this.catShow.html(catDiv);
             $(`#cat-counter-${this.currentCat.catNumber}`).on('click', (function (num) {
+                return function () {
                 octopus.incrementCounter(num);
+                octopus.updateCounterView();
+                }
             })(this.currentCat.catNumber))
         }
     }
