@@ -13,13 +13,26 @@
 <body>
     <h1>Cat Clicker</h1>
     <div class="container">
+            <button id="admin">Admin</button>
         <div class="row">
             <div class="col-md-2">
                 <ul class="cat-list"></ul>
             </div>
-            <div class="cat-show col-md-6">
-                <!-- <div class="counter2"></div>
-                <img src="img/cat2.jpg" alt="a cat that thinks you're scary"> -->
+            <div class="cat-show col-md-6"></div>
+            <div class="admin col-md-4">
+                <form onsubmit="event.preventDefault();">
+                    <fieldset>
+                        <legend>Admin View</legend>
+                        Name: <input type="text" name="name" />
+                        <br />
+                        ImageUrl: <input type="text" name="imageUrl" />
+                        <br />
+                        #Clicks: <input type="number" name="clicks" />
+                        <br />
+                        <button id="save">Save</button>
+                        <button id="cancel">Cancel</button>
+                    </fieldset>
+                </form>
             </div>
         </div>
     </div>
