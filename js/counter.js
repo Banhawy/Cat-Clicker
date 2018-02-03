@@ -4,10 +4,11 @@ $(function() {
             this.cats = [];
             for (let i = 1; i < 8; i++) {
                 var cat = {
-                    name: `Cat${i}`,
+                    name: `cat${i}`,
                     counter: 0,
                     catNumber: i,
-                    currentCat: false
+                    currentCat: false,
+                    catUrl: `img/cat${i}.jpg`
                 }
                 this.cats.push(cat);
             }
@@ -36,7 +37,7 @@ $(function() {
         },
         setCatAttr: function(cat, attrObj) {
             cat.name = attrObj.get('name');
-            cat.image = attrObj.get('imageUrl');
+            cat.catUrl = attrObj.get('imageUrl');
             cat.counter = attrObj.get('clicks');
         }
     };
@@ -69,6 +70,8 @@ $(function() {
             let currentCat = model.getCurrentCat();
             model.setCatAttr(currentCat, attrObj);
             catView.render();
+            listView.init();
+            listView.render();
         },
         setAdminView: function() {
             admin.render();
@@ -86,14 +89,24 @@ $(function() {
             this.cats = octopus.getAllCats();
             listView.render();
         },
+        addClickEvents: function() {
+            this.cats.forEach(function(cat) {
+                $(`#${cat.catNumber}`).on('click', (function(num) {
+                    return function() {
+                        octopus.setCurrentCat(num);
+                        octopus.setCatView();
+                    }
+                })(cat.catNumber));
+            })
+        },
         render: function() {
             var htmlStr = '';
             this.cats.forEach(function(cat) {
-                htmlStr += `<li id="${cat.name}">${cat.name}</li>`;
+                htmlStr += `<li id="${cat.catNumber}">${cat.name}</li>`;
             });
             this.catList.html(htmlStr);
             this.cats.forEach(function(cat) {
-                $(`#${cat.name}`).on('click', (function(num) {
+                $(`#${cat.catNumber}`).on('click', (function(num) {
                     return function() {
                         octopus.setCurrentCat(num);
                         octopus.setCatView();
@@ -113,7 +126,7 @@ $(function() {
         },
         render: function() {
             let catDiv = `<div class="counter"><h2>${this.currentCat.name}</h2><span>${this.currentCat.counter}</span></div>
-            <img id="cat-counter-${this.currentCat.catNumber}" src="img/cat${this.currentCat.catNumber}.jpg" alt="cute cat pic">`;
+            <img id="cat-counter-${this.currentCat.catNumber}" src="${this.currentCat.catUrl}" alt="cute cat pic">`;
             this.catShow.html(catDiv);
             $(`#cat-counter-${this.currentCat.catNumber}`).on('click', (function(num) {
                 return function() {
